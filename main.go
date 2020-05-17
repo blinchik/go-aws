@@ -17,6 +17,7 @@ func main() {
 		
 		if *raw{
 			summary := mEC2.DescribeByOperationTag(os.Args[2])
+			mEC2.StartEC2(summary.InstanceId)
 			return
 		}else{
 			
