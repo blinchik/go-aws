@@ -12,12 +12,24 @@ import (
 func main() {
 
 	if os.Args[1] == "start" {
-
+		
+		raw := flag.Bool("raw", false, "raw")
+		
+		if *raw{
+			summary := mEC2.DescribeByOperationTag(os.Args[2])
+			return
+		}else{
+			
 		summary := mEC2.DescribeByOperationTag(os.Args[2])
 
 		mEC2.StartEC2(summary.InstanceId)
 
 		hostRe.HostnamesRefresh()
+			
+		}
+
+
+
 
 	}
 
