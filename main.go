@@ -15,6 +15,7 @@ func main() {
 	if os.Args[1] == "start" {
 		
 		raw := flag.Bool("raw", false, "raw")
+		flag.Parse()
 		
 		if *raw{
 			summary := mEC2.DescribeByOperationTag(os.Args[2])
