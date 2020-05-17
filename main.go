@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"flag"
 	"reflect"
 
 	mEC2 "github.com/blinchik-io/go-aws/lib/manage-ec2"
