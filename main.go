@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"flag"
 	"reflect"
 
 	mEC2 "github.com/blinchik/go-aws/lib/manage-ec2"
@@ -10,16 +11,36 @@ import (
 )
 
 func main() {
+	
+	raw := flag.Bool("raw", false, "raw")
+	flag.Parse()
 
-	if os.Args[1] == "start" {
+		
 
+		
+		if *raw{
+			
+			if os.Args[2] == "start" {
+
+			summary := mEC2.DescribeByOperationTag(os.Args[3])
+			mEC2.StartEC2(summary.InstanceId)
+			return
+			}
+		}else{
+			if os.Args[1] == "start" {
 		summary := mEC2.DescribeByOperationTag(os.Args[2])
 
 		mEC2.StartEC2(summary.InstanceId)
 
 		hostRe.HostnamesRefresh()
+			}
+			
+		}
 
-	}
+
+
+
+	
 
 	if os.Args[1] == "stop" {
 

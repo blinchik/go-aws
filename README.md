@@ -10,12 +10,6 @@ aws account
 
 go version >= 1.13
 
-install `aws-sdk-go`
-
-```bash
-go get -u github.com/aws/aws-sdk-go/...
-```
-
 ## Setup
 
 The program reads two environment variables to get the default aws credentials and region (`GO_AWS_CRED`, `GO_AWS_REGION`).
