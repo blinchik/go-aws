@@ -245,7 +245,7 @@ func DescribeByGeneralTag(tag string, value string) (summary SummaryEC2) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(output))
+
 
 	return summary
 
