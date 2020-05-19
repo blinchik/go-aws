@@ -5,8 +5,8 @@ import (
 	"os"
 	"reflect"
 
-	mEC2 "github.com/blinchik-io/go-aws/lib/manage-ec2"
-	hostRe "github.com/blinchik-io/go-aws/lib/refresh-hostnames"
+	mEC2 "github.com/blinchik/go-aws/lib/manage-ec2"
+	hostRe "github.com/blinchik/go-aws/lib/refresh-hostnames"
 )
 
 func main() {
@@ -66,6 +66,9 @@ func main() {
 		if os.Args[2] == "-t" {
 
 			summary := mEC2.DescribeByGeneralTag(os.Args[3], os.Args[4])
+
+			fmt.Println(summary)
+
 			v := reflect.ValueOf(&summary).Elem()
 
 			typeOfS := v.Type()
