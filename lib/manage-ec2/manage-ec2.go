@@ -1,7 +1,6 @@
 package manage
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -240,12 +239,6 @@ func DescribeByGeneralTag(tag string, value string) (summary SummaryEC2) {
 		}
 
 	}
-
-	output, err := json.MarshalIndent(summary, "", "  ")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 
 	return summary
 
