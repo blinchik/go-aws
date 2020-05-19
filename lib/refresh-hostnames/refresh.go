@@ -11,7 +11,7 @@ import (
 
 	"strings"
 
-	mEC2 "github.com/blinchik-io/go-aws/lib/manage-ec2"
+	mEC2 "github.com/blinchik/go-aws/lib/manage-ec2"
 )
 
 var home, err = os.UserHomeDir()
