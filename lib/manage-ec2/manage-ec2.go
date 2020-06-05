@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	"path/filepath"
+
+	// "path/filepath"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -20,19 +21,29 @@ var home, err = os.UserHomeDir()
 
 var awsCred = os.Getenv("GO_AWS_CRED")
 
-var awsRegion = os.Getenv("GO_AWS_REGION")
+var awsRegion = os.Getenv("aws_region")
 
 func AwsEC2SessionHelper() (svc *ec2.EC2) {
 
-	creds := credentials.NewSharedCredentials(filepath.FromSlash(fmt.Sprintf("%s/.aws/credentials", home)), awsCred)
+	var sess *session.Session
 
-	sess, err := session.NewSession(&aws.Config{
-		Region:      aws.String(awsRegion),
-		Credentials: creds,
+	sess, err = session.NewSession(&aws.Config{
+		Region: aws.String(awsRegion),
 	})
 
 	if err != nil {
-		log.Fatal(err)
+
+		creds := credentials.NewSharedCredentials(filepath.FromSlash(fmt.Sprintf("%s/.aws/credentials", home)), awsCred)
+
+		sess, err = session.NewSession(&aws.Config{
+			Region:      aws.String(awsRegion),
+			Credentials: creds,
+		})
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
 	}
 
 	// Create an EC2 service client.

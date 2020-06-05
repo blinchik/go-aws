@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 
@@ -11,6 +12,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	raw := flag.Bool("raw", false, "raw")
 	flag.Parse()
