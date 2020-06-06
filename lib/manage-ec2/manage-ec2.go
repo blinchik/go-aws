@@ -27,23 +27,36 @@ func AwsEC2SessionHelper() (svc *ec2.EC2) {
 
 	var sess *session.Session
 
-	sess, err = session.NewSession(&aws.Config{
-		Region: aws.String(awsRegion),
-	})
+	creds := credentials.NewSharedCredentials(filepath.FromSlash(fmt.Sprintf("%s/.aws/credentials", home)), awsCred)
+
+	_, err := creds.Get()
 
 	if err != nil {
-
-		creds := credentials.NewSharedCredentials(filepath.FromSlash(fmt.Sprintf("%s/.aws/credentials", home)), awsCred)
+		log.Println(err)
+		log.Println("skipping")
 
 		sess, err = session.NewSession(&aws.Config{
-			Region:      aws.String(awsRegion),
-			Credentials: creds,
+			Region: aws.String(awsRegion),
 		})
 
 		if err != nil {
+
 			log.Fatal(err)
 		}
 
+		// Create an EC2 service client.
+		svc = ec2.New(sess)
+		return svc
+
+	}
+
+	sess, err = session.NewSession(&aws.Config{
+		Region:      aws.String(awsRegion),
+		Credentials: creds,
+	})
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// Create an EC2 service client.
