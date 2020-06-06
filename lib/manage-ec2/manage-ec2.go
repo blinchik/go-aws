@@ -32,7 +32,6 @@ func AwsEC2SessionHelper() (svc *ec2.EC2) {
 	_, err := creds.Get()
 
 	if err != nil {
-		log.Println("skipping ~/.aws/credentials file")
 
 		sess, err = session.NewSession(&aws.Config{
 			Region: aws.String(awsRegion),
