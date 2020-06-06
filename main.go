@@ -15,6 +15,9 @@ func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	raw := flag.Bool("raw", false, "raw")
+	describe := flag.Bool("d", false, "describe")
+	freeTag := flag.Bool("f", false, "free tag")
+
 	flag.Parse()
 
 	if *raw {
@@ -77,8 +80,8 @@ func main() {
 
 	}
 
-	if os.Args[1] == "-d" {
-		if os.Args[2] == "-t" {
+	if *describe {
+		if *freeTag {
 
 			summary := mEC2.DescribeByGeneralTag(os.Args[3], os.Args[4])
 
