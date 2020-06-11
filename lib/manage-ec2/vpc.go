@@ -22,7 +22,27 @@ type VpcList struct {
 	vpcs []vpc
 }
 
-func VpcDescribe() {
+type sg struct {
+	Sgid   string `json:"sg_id"`
+	SgName string `json:"sg_name"`
+	IpPerm []ipPerm
+	Tags   []TagMap
+}
+
+type ipPerm struct {
+	IpProtocol string
+	FromPort   int64
+	ToPort     int64
+	IpRanges   []string
+}
+
+type sgList struct {
+	sgs []sg
+}
+
+func VpcDescribe() []byte {
+
+	var vpcOutputList VpcList
 
 	svc := AwsEC2SessionHelper()
 
@@ -76,18 +96,25 @@ func VpcDescribe() {
 
 		vpcMap.CidrBlocks = AssociationsList
 
-		vpcMapJSON, err := json.Marshal(vpcMap)
-
-		if err != nil {
-			log.Println(err)
-		}
-
-		fmt.Println(string(vpcMapJSON))
+		vpcOutputList.vpcs = append(vpcOutputList.vpcs, vpcMap)
 
 	}
+
+	vpcOutput, err := json.Marshal(vpcOutputList.vpcs)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println(string(vpcOutput))
+
+	return vpcOutput
+
 }
 
-func SgDescribe() {
+func SgDescribe() []byte {
+
+	var sgOutputList sgList
 
 	svc := AwsEC2SessionHelper()
 
@@ -97,7 +124,73 @@ func SgDescribe() {
 		log.Println(err)
 	}
 
-	fmt.Println(result)
+	for _, sgValue := range result.SecurityGroups {
+
+		var sgMap sg
+
+		sgMap.Sgid = *sgValue.GroupId
+		sgMap.SgName = *sgValue.GroupName
+
+		var ipPermMap ipPerm
+
+		for _, sgIpPerm := range sgValue.IpPermissions {
+
+			if sgIpPerm.FromPort != nil {
+
+				ipPermMap.FromPort = *sgIpPerm.FromPort
+
+			}
+
+			if sgIpPerm.IpProtocol != nil {
+
+				ipPermMap.IpProtocol = *sgIpPerm.IpProtocol
+
+			}
+
+			if sgIpPerm.ToPort != nil {
+
+				ipPermMap.ToPort = *sgIpPerm.ToPort
+
+			}
+
+			for _, ipRange := range sgIpPerm.IpRanges {
+
+				ipPermMap.IpRanges = append(ipPermMap.IpRanges, *ipRange.CidrIp)
+
+			}
+
+			sgMap.IpPerm = append(sgMap.IpPerm, ipPermMap)
+
+		}
+
+		var tagList []TagMap
+		tag := make(TagMap)
+
+		for _, values := range sgValue.Tags {
+
+			tag[*values.Key] = *values.Value
+
+		}
+
+		tagList = append(tagList, tag)
+
+		sgMap.Tags = tagList
+
+		sgOutputList.sgs = append(sgOutputList.sgs, sgMap)
+
+	}
+
+	sgOutput, err := json.Marshal(sgOutputList.sgs)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	// fmt.Println(result)
+
+	fmt.Println(string(sgOutput))
+
+	return sgOutput
 
 }
 
