@@ -17,6 +17,9 @@ func main() {
 	raw := flag.Bool("raw", false, "raw")
 	describe := flag.Bool("d", false, "describe")
 	freeTag := flag.Bool("f", false, "free tag")
+	vpc := flag.Bool("vpc", false, "vpc")
+	sg := flag.Bool("sg", false, "sg")
+	sb := flag.Bool("sb", false, "subnet")
 
 	flag.Parse()
 
@@ -116,6 +119,29 @@ func main() {
 
 	}
 
+	if *describe {
+		if *vpc {
+
+			mEC2.VpcDescribe()
+
+		}
+	}
+
+	if *describe {
+		if *sg {
+
+			mEC2.SgDescribe()
+
+		}
+	}
+
+	if *describe {
+		if *sb {
+
+			mEC2.SubnetDescribe()
+
+		}
+	}
 	if os.Args[1] == "refresh" {
 		hostRe.HostnamesRefresh()
 
