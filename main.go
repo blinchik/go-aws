@@ -20,6 +20,7 @@ func main() {
 	vpc := flag.Bool("vpc", false, "vpc")
 	sg := flag.Bool("sg", false, "sg")
 	sb := flag.Bool("sb", false, "subnet")
+	vol := flag.Bool("vol", false, "volume")
 
 	flag.Parse()
 
@@ -142,6 +143,15 @@ func main() {
 
 		}
 	}
+
+	if *vol {
+		if *sg {
+
+			mEC2.DescribeAllVols()
+
+		}
+	}
+
 	if os.Args[1] == "refresh" {
 		hostRe.HostnamesRefresh()
 

@@ -40,11 +40,22 @@ type sgList struct {
 	sgs []sg
 }
 
+type sb struct {
+	AvailabilityZone string
+	CidrBlock        string
+	SubnetArn        string
+	SubnetId         string
+	VpcId            string
+	Tags             []TagMap
+}
+
+type sbList struct {
+	sbs []sb
+}
+
 func VpcDescribe() []byte {
 
 	var vpcOutputList VpcList
-
-	svc := AwsEC2SessionHelper()
 
 	result, err := svc.DescribeVpcs(nil)
 
@@ -115,8 +126,6 @@ func VpcDescribe() []byte {
 func SgDescribe() []byte {
 
 	var sgOutputList sgList
-
-	svc := AwsEC2SessionHelper()
 
 	result, err := svc.DescribeSecurityGroups(nil)
 
@@ -196,14 +205,53 @@ func SgDescribe() []byte {
 
 func SubnetDescribe() {
 
-	svc := AwsEC2SessionHelper()
+	var sbOutputList sbList
 
 	result, err := svc.DescribeSubnets(nil)
 
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
-	fmt.Println(result)
+	for _, sbValue := range result.Subnets {
+
+		var sbMap sb
+
+		sbMap.AvailabilityZone = *sbValue.AvailabilityZone
+		sbMap.CidrBlock = *sbValue.CidrBlock
+		sbMap.SubnetArn = *sbValue.SubnetArn
+		sbMap.SubnetId = *sbValue.SubnetId
+		sbMap.VpcId = *sbValue.VpcId
+
+		var tagList []TagMap
+		tag := make(TagMap)
+
+		for _, values := range sbValue.Tags {
+
+			tag[*values.Key] = *values.Value
+
+		}
+
+		tagList = append(tagList, tag)
+
+		sbMap.Tags = tagList
+
+		sbOutputList.sbs = append(sbOutputList.sbs, sbMap)
+
+	}
+
+	sbOutput, err := json.Marshal(sbOutputList.sbs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// fmt.Println(result)
+
+	fmt.Println(string(sbOutput))
+
+	if err != nil {
+		log.Println(err)
+	}
 
 }
