@@ -20,7 +20,7 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 RUN mkdir /app
-RUN mkdir ~/.ssh
+RUN mkdir "${user}/.ssh"
 
 WORKDIR /app
 

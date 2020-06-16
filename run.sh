@@ -1,8 +1,10 @@
 SSH_LOCAL="${HOME}/.ssh/"
-SSH_DOCKER="/home/root/.ssh/"
+SSH_DOCKER="${whoami}/.ssh/"
 
 
 docker run -i \
     -e aws_region=$aws_region \
-    -v "/$SSH_LOCAL:$SSH_DOCKER" \
+    -e user=${whoami} \
+    -v "$SSH_LOCAL:$SSH_DOCKER" \
+    -u `stat -c "%u:%g" $SSH_LOCAL` \
     devblinchik/go-aws:latest $1 $2

@@ -3,6 +3,7 @@ package manage
 import (
 	"fmt"
 	"log"
+	"os"
 
 	// "path/filepath"
 	"strings"
@@ -279,7 +280,8 @@ func DescribeAllMentionedTag(tag string) (summary SummaryEC2) {
 
 func ImportKey(name string) {
 
-	rsaKey.SavePEMKey(fmt.Sprintf("%s/.ssh/%s.pem", rsaKey.Home, name), rsaKey.Key)
+	rsaKey.SavePEMKey(fmt.Sprintf("%s/.ssh/%s.pem", os.Getenv("user"), name), rsaKey.Key)
+
 	pub := rsaKey.KeepPublicPEMKey(rsaKey.PublicKey)
 
 	var keyInput ec2.ImportKeyPairInput
