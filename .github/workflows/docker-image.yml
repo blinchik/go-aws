@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Login to DockerHub Registry
-      run: echo ${{secrets.DOCKER_HUB_PASS}} | docker login -u devblinchik --password-stdin
+      run: docker logout; echo ${{secrets.DOCKER_HUB_PASS}} | docker login -u devblinchik --password-stdin
     - name: Build the Docker image
       run: docker build -t devblinchik/go-aws:latest .
     - name: push go-aws to docker hub 
