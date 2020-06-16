@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: azure/docker-login@v1
       with:
-        login-server: index.docker.io
+        login-server: docker.io
         username: ${{ secrets.DOCKER_HUB_USER }}
         password: ${{ secrets.DOCKER_HUB_PASS }}
     - uses: actions/checkout@v2
