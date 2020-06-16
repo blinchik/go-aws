@@ -21,6 +21,7 @@ func main() {
 	sg := flag.Bool("sg", false, "sg")
 	sb := flag.Bool("sb", false, "subnet")
 	vol := flag.Bool("vol", false, "volume")
+	importkey := flag.Bool("importkey", false, "importkey")
 
 	flag.Parse()
 
@@ -117,6 +118,12 @@ func main() {
 			}
 
 		}
+
+	}
+
+	if *importkey {
+
+		mEC2.Testkey()
 
 	}
 

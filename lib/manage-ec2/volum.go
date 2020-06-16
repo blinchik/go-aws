@@ -5,7 +5,8 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/aws/session"
+
+	// "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
@@ -43,7 +44,6 @@ func DescribeAllVols() {
 
 func DetachVol() {
 
-	svc := ec2.New(session.New())
 	input := &ec2.DetachVolumeInput{
 		VolumeId: aws.String("vol-1234567890abcdef0"),
 	}
@@ -67,7 +67,7 @@ func DetachVol() {
 }
 
 func DeleteVol() {
-	svc := ec2.New(session.New())
+
 	input := &ec2.DeleteVolumeInput{
 		VolumeId: aws.String("vol-049df61146c4d7901"),
 	}
