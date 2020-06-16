@@ -1,3 +1,4 @@
+![Ship the docker container to the hub](https://github.com/blinchik/go-aws/workflows/Ship%20the%20docker%20container%20to%20the%20hub/badge.svg?branch=master)
 # go-aws
 
 ## Introduction
