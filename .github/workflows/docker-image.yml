@@ -14,12 +14,9 @@ jobs:
 
 
     steps:
-    - uses: azure/docker-login@v1
-      with:
-        login-server: docker.io
-        username: ${{ secrets.DOCKER_HUB_USER }}
-        password: ${{ secrets.DOCKER_HUB_PASS }}
     - uses: actions/checkout@v2
+    - name: docker login
+      run: docker login -u devblinchik
     - name: Build the Docker image
       run: docker build -t devblinchik/go-aws:latest .
     - name: push go-aws to docker hub 
