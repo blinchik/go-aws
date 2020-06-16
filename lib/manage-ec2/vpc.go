@@ -4,11 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	rsaKey "github.com/blinchik/go-utils/rsakey"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
 // TagMap ads dasd
@@ -258,29 +253,5 @@ func SubnetDescribe() {
 	if err != nil {
 		log.Println(err)
 	}
-
-}
-
-func Testkey() {
-
-	rsaKey.SavePEMKey(fmt.Sprintf("%s/.ssh/%s.pem", rsaKey.Home, "test6"), rsaKey.Key)
-	pub := rsaKey.KeepPublicPEMKey(rsaKey.PublicKey)
-
-	var keyInput ec2.ImportKeyPairInput
-
-	name := aws.String("postgres_test5")
-
-	keyInput.KeyName = name
-	keyInput.PublicKeyMaterial = pub
-
-	// svc.CreateKeyPair(&keyInput)
-
-	out, err := svc.ImportKeyPair(&keyInput)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	fmt.Println(out)
 
 }

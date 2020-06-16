@@ -62,6 +62,8 @@ func AwsEC2SessionHelper() (svc *ec2.EC2) {
 
 func init() {
 
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
 	svc = AwsEC2SessionHelper()
 
 }

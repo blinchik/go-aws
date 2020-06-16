@@ -123,7 +123,9 @@ func main() {
 
 	if *importkey {
 
-		mEC2.Testkey()
+		name := os.Args[2]
+
+		mEC2.ImportKey(name)
 
 	}
 

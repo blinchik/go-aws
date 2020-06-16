@@ -2,12 +2,14 @@ package manage
 
 import (
 	"fmt"
+	"log"
 
 	// "path/filepath"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	rsaKey "github.com/blinchik/go-utils/rsakey"
 
 	"github.com/aws/aws-sdk-go/aws"
 )
@@ -272,5 +274,29 @@ func DescribeAllMentionedTag(tag string) (summary SummaryEC2) {
 	}
 
 	return summary
+
+}
+
+func ImportKey(name string) {
+
+	rsaKey.SavePEMKey(fmt.Sprintf("%s/.ssh/%s.pem", rsaKey.Home, name), rsaKey.Key)
+	pub := rsaKey.KeepPublicPEMKey(rsaKey.PublicKey)
+
+	var keyInput ec2.ImportKeyPairInput
+
+	awsName := aws.String(name)
+
+	keyInput.KeyName = awsName
+	keyInput.PublicKeyMaterial = pub
+
+	// svc.CreateKeyPair(&keyInput)
+
+	out, err := svc.ImportKeyPair(&keyInput)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println(out)
 
 }
