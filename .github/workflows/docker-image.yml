@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Ship the docker container to the hub
 
 on:
   push:
@@ -16,3 +16,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: echo ${{ secrets.DOCKER_HUB_PASS }} | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+    - name: Build the Docker image
+      run: docker build -t devblinchik/go-aws:latest .
+    - name: push go-aws to docker hub 
+      run: docker push devblinchik/go-aws:latest
+    - name: docker logout
+      run: docker logout
