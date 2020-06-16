@@ -1,0 +1,22 @@
+name: ship go-aws to docker hub
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: login in docker
+      run: echo ${DOCKER_HUB_PASS} | docker login -u ${DOCKER_HUB_USER} --password-stdin 
+    - name: Build the Docker image
+      run: docker build -t devblinchik/go-aws:latest .
+    - name: push go-aws to docker hub 
+      run: docker push devblinchik/go-aws:latest
+
