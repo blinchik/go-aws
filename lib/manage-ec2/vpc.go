@@ -2,7 +2,6 @@ package manage
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 )
 
@@ -117,8 +116,6 @@ func VpcDescribe() []byte {
 		log.Println(err)
 	}
 
-	fmt.Println(string(vpcOutput))
-
 	return vpcOutput
 
 }
@@ -195,15 +192,11 @@ func SgDescribe() []byte {
 		log.Println(err)
 	}
 
-	// fmt.Println(result)
-
-	fmt.Println(string(sgOutput))
-
 	return sgOutput
 
 }
 
-func SubnetDescribe() {
+func SubnetDescribe() []byte {
 
 	var sbOutputList sbList
 
@@ -248,10 +241,10 @@ func SubnetDescribe() {
 
 	// fmt.Println(result)
 
-	fmt.Println(string(sbOutput))
-
 	if err != nil {
 		log.Println(err)
 	}
+
+	return sbOutput
 
 }
