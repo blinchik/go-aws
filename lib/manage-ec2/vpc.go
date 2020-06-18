@@ -22,13 +22,22 @@ type VpcList struct {
 }
 
 type sg struct {
-	Sgid   string `json:"sg_id"`
-	SgName string `json:"sg_name"`
-	IpPerm []ipPerm
-	Tags   []TagMap
+	Sgid         string         `json:"sg_id"`
+	SgName       string         `json:"sg_name"`
+	IpPerm       []ipPerm       `json:"Ingress"`
+	IpPermEgress []IpPermEgress `json:"Egress"`
+
+	Tags []TagMap
 }
 
 type ipPerm struct {
+	IpProtocol string
+	FromPort   int64
+	ToPort     int64
+	IpRanges   []string
+}
+
+type IpPermEgress struct {
 	IpProtocol string
 	FromPort   int64
 	ToPort     int64
@@ -169,6 +178,38 @@ func SgDescribe() []byte {
 
 		}
 
+		var ipPermMapEgress IpPermEgress
+
+		for _, sgIpPerm := range sgValue.IpPermissionsEgress {
+
+			if sgIpPerm.FromPort != nil {
+
+				ipPermMapEgress.FromPort = *sgIpPerm.FromPort
+
+			}
+
+			if sgIpPerm.IpProtocol != nil {
+
+				ipPermMapEgress.IpProtocol = *sgIpPerm.IpProtocol
+
+			}
+
+			if sgIpPerm.ToPort != nil {
+
+				ipPermMapEgress.ToPort = *sgIpPerm.ToPort
+
+			}
+
+			for _, ipRange := range sgIpPerm.IpRanges {
+
+				ipPermMapEgress.IpRanges = append(ipPermMapEgress.IpRanges, *ipRange.CidrIp)
+
+			}
+
+			sgMap.IpPermEgress = append(sgMap.IpPermEgress, ipPermMapEgress)
+
+		}
+
 		var tagList []TagMap
 		tag := make(TagMap)
 
@@ -240,10 +281,6 @@ func SubnetDescribe() []byte {
 	}
 
 	// fmt.Println(result)
-
-	if err != nil {
-		log.Println(err)
-	}
 
 	return sbOutput
 
