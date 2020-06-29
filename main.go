@@ -166,7 +166,7 @@ func main() {
 	if *create {
 		if os.Args[2] == "secret" {
 
-			secret.CreateSecret()
+			secret.CreateSecret("test", "test", "test")
 
 		}
 	}
