@@ -9,6 +9,7 @@ import (
 
 	mEC2 "github.com/blinchik/go-aws/lib/manage-ec2"
 	hostRe "github.com/blinchik/go-aws/lib/refresh-hostnames"
+	secret "github.com/blinchik/go-aws/lib/secrets"
 )
 
 func main() {
@@ -22,6 +23,7 @@ func main() {
 	sb := flag.Bool("sb", false, "subnet")
 	vol := flag.Bool("vol", false, "volume")
 	importkey := flag.Bool("importkey", false, "importkey")
+	create := flag.Bool("c", false, "create")
 
 	flag.Parse()
 
@@ -157,6 +159,14 @@ func main() {
 		if *sg {
 
 			mEC2.DescribeAllVols()
+
+		}
+	}
+
+	if *create {
+		if os.Args[2] == "secret" {
+
+			secret.CreateSecret()
 
 		}
 	}
