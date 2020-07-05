@@ -120,7 +120,7 @@ func DescribeByOperationTag(value string) (summary SummaryEC2) {
 
 }
 
-type hostName struct {
+type HostName struct {
 	Host string
 	Name string
 }
