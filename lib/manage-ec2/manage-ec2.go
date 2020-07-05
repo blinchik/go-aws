@@ -125,9 +125,13 @@ type hostName struct {
 	name string
 }
 
+type hostNames struct {
+	hostNameBlock []hostName
+}
+
 func DescribeAllRunning() hostNames {
 
-	var hostNames []hostName
+	var output hostNames
 
 	svc := AwsEC2SessionHelper()
 
@@ -166,7 +170,7 @@ func DescribeAllRunning() hostNames {
 
 				}
 
-				hostNames = append(hostNames, hostNameBlock)
+				output = append(output, hostNameBlock)
 
 			}
 
@@ -174,7 +178,7 @@ func DescribeAllRunning() hostNames {
 
 	}
 
-	return hostNames
+	return output
 
 }
 
