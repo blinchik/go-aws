@@ -170,7 +170,7 @@ func DescribeAllRunning() hostNames {
 
 				}
 
-				output = append(output, hostNameBlock)
+				output.hostNameBlock = append(output.hostNameBlock, hostNameBlock)
 
 			}
 
