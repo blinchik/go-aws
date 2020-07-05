@@ -121,12 +121,12 @@ func DescribeByOperationTag(value string) (summary SummaryEC2) {
 }
 
 type hostName struct {
-	host string
-	name string
+	Host string
+	Name string
 }
 
 type hostNames struct {
-	hostNameBlock []hostName
+	HostNameBlock []HostName
 }
 
 func DescribeAllRunning() hostNames {
@@ -159,18 +159,18 @@ func DescribeAllRunning() hostNames {
 			for _, instance := range values.Instances {
 				var hostNameBlock hostName
 
-				hostNameBlock.host = *instance.PrivateIpAddress
+				hostNameBlock.Host = *instance.PrivateIpAddress
 
 				for _, values := range instance.Tags {
 
 					if *values.Key == "Name" {
-						hostNameBlock.name = *values.Value
+						hostNameBlock.Name = *values.Value
 
 					}
 
 				}
 
-				output.hostNameBlock = append(output.hostNameBlock, hostNameBlock)
+				output.HostNameBlock = append(output.HostNameBlock, hostNameBlock)
 
 			}
 
