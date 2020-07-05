@@ -157,7 +157,7 @@ func DescribeAllRunning() hostNames {
 		for _, values := range result.Reservations {
 
 			for _, instance := range values.Instances {
-				var hostNameBlock hostName
+				var hostNameBlock HostName
 
 				hostNameBlock.Host = *instance.PrivateIpAddress
 
