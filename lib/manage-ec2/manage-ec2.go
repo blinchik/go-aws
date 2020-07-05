@@ -120,7 +120,14 @@ func DescribeByOperationTag(value string) (summary SummaryEC2) {
 
 }
 
-func DescribeAllRunning() (summary SummaryEC2) {
+type hostName struct {
+	host string
+	name string
+}
+
+func DescribeAllRunning() hostNames {
+
+	var hostNames []hostName
 
 	svc := AwsEC2SessionHelper()
 
@@ -143,21 +150,23 @@ func DescribeAllRunning() (summary SummaryEC2) {
 
 	} else {
 
-		for i := 0; i < len(result.Reservations); i++ {
+		for _, values := range result.Reservations {
 
-			summary.InstanceId = append(summary.InstanceId, result.Reservations[i].Instances[0].InstanceId)
-			summary.PrivateIpAddress = append(summary.PrivateIpAddress, result.Reservations[i].Instances[0].PrivateIpAddress)
+			for _, instance := range values.Instances {
+				var hostNameBlock hostName
 
-			AssociationStruct := result.Reservations[i].Instances[0].String()
-			ec2IsPub := strings.Contains(AssociationStruct, "Association")
+				hostNameBlock.host = *instance.PrivateIpAddress
 
-			if ec2IsPub {
+				for _, values := range instance.Tags {
 
-				summary.PublicIp = append(summary.PublicIp, result.Reservations[i].Instances[0].NetworkInterfaces[0].Association.PublicIp)
+					if *values.Key == "Name" {
+						hostNameBlock.name = *values.Value
 
-			} else {
+					}
 
-				summary.PublicIp = append(summary.PublicIp, nil)
+				}
+
+				hostNames = append(hostNames, hostNameBlock)
 
 			}
 
@@ -165,7 +174,7 @@ func DescribeAllRunning() (summary SummaryEC2) {
 
 	}
 
-	return summary
+	return hostNames
 
 }
 
