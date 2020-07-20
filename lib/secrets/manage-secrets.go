@@ -30,24 +30,20 @@ func CreateSecret(description, name, secret string) {
 
 		update := &secretsmanager.UpdateSecretInput{
 			Description:  aws.String(description),
-			Name:         aws.String(name),
+			SecretId:     aws.String(name),
 			SecretString: aws.String(secret),
 		}
 
-
-		result, err = svc.UpdateSecret(update)
+		result, err := svc.UpdateSecret(update)
 
 		if err != nil {
 			log.Fatal(err)
 
 		}
 
-
-
+		fmt.Println(result)
 
 	}
-
-	
 
 	fmt.Println(result)
 
