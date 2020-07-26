@@ -48,3 +48,25 @@ func CreateSecret(description, name, secret string) {
 	fmt.Println(result)
 
 }
+
+func GetSecret(name, versionStage string) string {
+
+	session := session.Must(session.NewSession())
+
+	svc := secretsmanager.New(session, aws.NewConfig().WithRegion(os.Getenv("aws_region")))
+
+	input := &secretsmanager.GetSecretValueInput{
+		SecretId:     aws.String(name),
+		VersionStage: aws.String(versionStage),
+	}
+
+	result, err := svc.GetSecretValue(input)
+
+	if err != nil {
+		log.Fatal(err)
+
+	}
+
+	return *result.SecretString
+
+}

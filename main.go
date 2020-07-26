@@ -24,6 +24,7 @@ func main() {
 	vol := flag.Bool("vol", false, "volume")
 	importkey := flag.Bool("importkey", false, "importkey")
 	create := flag.Bool("c", false, "create")
+	get := flag.Bool("get", false, "get")
 
 	flag.Parse()
 
@@ -167,6 +168,16 @@ func main() {
 		if os.Args[2] == "secret" {
 
 			secret.CreateSecret("test", "test", "test")
+
+		}
+	}
+
+	if *get {
+		if os.Args[2] == "secret" {
+
+			secretValue := secret.GetSecret("global-management", "AWSCURRENT")
+
+			fmt.Println(secretValue)
 
 		}
 	}
